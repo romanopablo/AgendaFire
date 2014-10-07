@@ -1,4 +1,11 @@
-var agenda = angular.module("agenda",['ngRoute']);
+
+
+var agenda =
+        angular.
+            module('agenda',[
+                    'ngRoute',
+                    'firebase'
+                  ]);
 
 
 //******************************* ROUTE PROVIDER **************************************************
@@ -24,7 +31,7 @@ agenda.config(["$routeProvider",
 //******************************* CONTROLADOR AgencaController **************************************************
 
 agenda.controller('AgendaController',['$scope','peopleService',
-    function ($scope, peopleService){ //AL VERREs
+    function ($scope, peopleService){
         $scope.persona = {};
         $scope.personas = peopleService.getPeopleArray();
 
@@ -62,20 +69,20 @@ agenda.controller('AgendaController',['$scope','peopleService',
 
 //******************************* SERVICIO peopleService (ARRAY DE PERSONAS) **************************************************
 
-agenda.service('peopleService',function peopleService($http,$q){
-    var peopleArray = [{
-        "id" : 0,
-        "name": "ExampleName",
-        "email":"Mail@example.com",
-        "phone":"12345678910"}];
+agenda.service('peopleService',['$firebase', function ($firebase){
+
+    var ref = new Firebase("https://crud1.firebaseio.com/");
+    // create an AngularFire reference to the data
+    var sync = $firebase(ref);
+    var peopleArray = sync.$asArray();
+
 
     this.addPeople = function(person){      //RECIBE UN OBJ PERSONA.
-        if (person.name){                   //SI NO TIENE NAME, NO LO GUARDO
-            if (person.id == null){          //SI EL OBJ NO TIENE ID, NO ESTOY EDITANDO, LE ASIGNO LA ULTIMA POSICION
+           /* if (person.id == null){          //SI EL OBJ NO TIENE ID, NO ESTOY EDITANDO, LE ASIGNO LA ULTIMA POSICION
                 person.id = peopleArray.length;
             };
-            peopleArray[person.id] = person; //COLOCO EL OBJ EN LA POS DE SU ID
-        };
+            peopleArray[person.id] = person; //COLOCO EL OBJ EN LA POS DE SU ID*/
+            peopleArray.$add(person);
     };
 
     this.deletePeople = function(id){       //RECIBE  ID
@@ -84,26 +91,30 @@ agenda.service('peopleService',function peopleService($http,$q){
 
 
     this.getPeopleArray = function(){       //NO RECIBE PARAMETROS, DEVUELVE EL ARRAY CON PERSONAS
-        peopleArrayCopy = angular.copy(peopleArray); //COPIO EL ARRAY, PARA TENERLO ENCAPSULADO
-        return peopleArrayCopy;
+        /*var peopleArrayCopy = angular.copy(peopleArray); //COPIO EL ARRAY, PARA TENERLO ENCAPSULADO
+        return peopleArrayCopy;*/
+        var promise = peopleArray;
+        console.log(promise);
+        return promise;
     };
 
     this.loadPeople = function(){       //NO RECIBE PARAMETROS, CARGO CONTACTOS DEL JSON "DATA"
-        var q = $q.defer();
+       /* var q = $q.defer();
         $http.get('scripts/data.json').success(function(data){
             peopleArray = peopleArray.concat(data.data);
             q.resolve(data);
         }).error(function(data,status){
             q.reject(data);
         });
-        return q.promise;
+        return q.promise;*/
+
     };
 
     this.cleanPeople = function(){
         peopleArray = [];
     };
 
-});
+}]);
 
 
 //******************************* DIRECTIVA AGREGAR**************************************************
