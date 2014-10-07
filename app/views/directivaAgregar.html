@@ -1,0 +1,15 @@
+<form class="well" style="border-radius: 25px;">
+
+    <h4>SOY UNA DIRECTIVA</h4>
+    <label>Nombre</label>
+    <input type="text" name="name" ng-model="persona.name">
+    <label>Mail</label>
+    <input type="text" name="email" ng-model="persona.email">
+    <label>Telefono</label>
+    <input type="text" name="phone" ng-model="persona.phone">
+    <br/>
+    <input type="hidden" ng-model="persona.id">
+    <!--<input type="button" style="border-radius: 15px; margin: 10px" value="Guardar" class="btn btn-primary" ng-click="funcion()"/>-->
+    <a class="btn btn-info" style="border-radius: 15px; margin: 10px" href="/#/ver" ng-click="funcion()"><i class="glyphicon-plus glyphicon"></i> Agregar</a>
+
+</form>

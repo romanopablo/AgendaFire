@@ -1,0 +1,68 @@
+{
+	"result": {
+		"code": "OK",
+		"msg": ""
+	},
+	"data": [
+		{
+			"id": 123,
+			"name": "Pepe Hongo",
+			"email": "pepe@hongo.com.ar",
+			"phone": "2614352199"
+		},
+		{
+			"id": 124,
+			"name": "Juan Cruz",
+			"email": "juan@cruz.com",
+			"phone": "2614254973"
+		},
+		{
+			"id": 125,
+			"name": "Pizzeria",
+			"email": "pizza@ya.net",
+			"phone": "2614321265"
+		},
+		{
+			"id": 126,
+			"name": "Manso Contacto",
+			"email": "manso@manso.com",
+			"phone": "2614657687"
+		},
+		{
+			"id": 127,
+			"name": "El Porteñito",
+			"email": "porteño@bsas.com.ar",
+			"phone": "011432123"
+		},{
+			"id": 128,
+			"name": "Jose Perez",
+			"email": "jose@hotmail.com",
+			"phone": "2614543218"
+		},
+		{
+			"id": 129,
+			"name": "Minita",
+			"email": "hola@yo.com.ar",
+			"phone": "2614789876"
+		},
+		{
+			"id": 130,
+			"name": "Belen Rubia",
+			"email": "blondie@belu.com.ar",
+			"phone": "2614325432"
+		},
+		{
+			"id": 131,
+			"name": "Pecho Futbol",
+			"email": "pecho@futbol.cl",
+			"phone": "011565432"
+		},
+		{
+			"id": 132,
+			"name": "German Berselli",
+			"email": "germanberselli@gmail.com",
+			"phone": "2616040283"
+		}
+	],
+	"count": 10		
+}
