@@ -37,32 +37,21 @@ agenda.controller('AgendaController',['$scope','peopleService',
 
         $scope.cargarPersona = function (){
             peopleService.addPeople($scope.persona);
-            $scope.personas = peopleService.getPeopleArray();
             $scope.persona ={};
         };
 
         $scope.eliminarPersona = function (id){
             peopleService.deletePeople(id);
-            //$scope.personas = peopleService.getPeopleArray();
-        };
+                    };
 
-        $scope.editarPersona = function (id) {    //CREO UNA INSTANCIA NUEVA Y COPIO LOS ATRIBUTOS EN EL OBJETO PERSONA DEL SCOPE
-            /*var copiape = angular.copy($scope.personas[id]);
-             $scope.persona.id = id;
-             $scope.persona.name = copiape.name;
-             $scope.persona.email = copiape.email;
-             $scope.persona.phone = copiape.phone;*/
-              peopleService.edit(id);
+        $scope.editarPersona = function (person) {
+                console.log(person.id);
+              $scope.persona = person;
         };
 
 
         $scope.cargarAgenda = function (){
             peopleService.loadPeople();
-            /*peopleService.loadPeople().then(function(){
-                $scope.personas = peopleService.getPeopleArray();
-            },function(){
-                alert("No es posible cargar la agenda!");});
-        */
         };
 
         $scope.limpiarAgenda = function(){
@@ -74,28 +63,33 @@ agenda.controller('AgendaController',['$scope','peopleService',
 
 agenda.service('peopleService',['$firebase','$http', function ($firebase, $http){
 
-    var ref = new Firebase("https://crud1.firebaseio.com/");
+    var ref = new Firebase("https://crud1.firebaseio.com/");  //Aca debes colocar el nombre de tu BD Firebase
     // create an AngularFire reference to the data
     var sync = $firebase(ref);
     var peopleArray = sync.$asArray();
 
 
-    this.addPeople = function(person){      //RECIBE UN OBJ PERSONA.
-           /* if (person.id == null){          //SI EL OBJ NO TIENE ID, NO ESTOY EDITANDO, LE ASIGNO LA ULTIMA POSICION
-                person.id = peopleArray.length;
-            };
-            peopleArray[person.id] = person; //COLOCO EL OBJ EN LA POS DE SU ID*/
-            peopleArray.$add(person);
-    };
+    this.addPeople = function(person){
 
-    this.deletePeople = function(id){       //RECIBE  ID
+        if( person.id){   //si el objeto tiene id, estoy editando uso $save, sino uso $add para uno nuevo
+            peopleArray.$save(person);
+
+        }else{
+                person.id = peopleArray.length;
+                console.log('guardati nuevo id: ' + person.id);
+                peopleArray.$add(person);
+
+            }
+        };
+
+
+
+
+    this.deletePeople = function(id){
         peopleArray.$remove(id);
     };
 
-
-    this.getPeopleArray = function(){       //NO RECIBE PARAMETROS, DEVUELVE EL ARRAY CON PERSONAS
-        /*var peopleArrayCopy = angular.copy(peopleArray); //COPIO EL ARRAY, PARA TENERLO ENCAPSULADO
-        return peopleArrayCopy;*/
+    this.getPeopleArray = function(){
         return peopleArray;
     };
 
@@ -104,10 +98,9 @@ agenda.service('peopleService',['$firebase','$http', function ($firebase, $http)
         $http.get('scripts/data.json').success(function(data){
             console.log(data.data);
             var i;
-            for (i = 0; i < data.data.length; i++) {
+            for (i = 0; i < data.data.length; i++) { //Recorrer el objeto data dentro del JSON y guardar de a uno
                 console.log(data.data[i]);
                 peopleArray.$add(data.data[i]);}
-            //peopleArray.concat(data.data);
         });
 
 
@@ -115,14 +108,9 @@ agenda.service('peopleService',['$firebase','$http', function ($firebase, $http)
 
     this.cleanPeople = function(){
         var i;
-
-        for (i = 0; i < peopleArray.length; i++) {
+        for (i = 0; i < peopleArray.length; i++) { //rrecorrer el array peopleArray y eliminar 1 por 1 los elem
             console.log(i);
             peopleArray.$remove(i);}
-    };
-
-    this.edit = function(id){
-        console.log(peopleArray.$indexFor(id));
     };
 
 }]);
