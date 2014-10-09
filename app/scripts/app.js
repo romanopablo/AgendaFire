@@ -43,33 +43,36 @@ agenda.controller('AgendaController',['$scope','peopleService',
 
         $scope.eliminarPersona = function (id){
             peopleService.deletePeople(id);
-            $scope.personas = peopleService.getPeopleArray();
+            //$scope.personas = peopleService.getPeopleArray();
         };
 
-        $scope.editarPersona = function (id){    //CREO UNA INSTANCIA NUEVA Y COPIO LOS ATRIBUTOS EN EL OBJETO PERSONA DEL SCOPE
-            var copiape = angular.copy($scope.personas[id]);
-            $scope.persona.id = id;
-            $scope.persona.name = copiape.name;
-            $scope.persona.email = copiape.email;
-            $scope.persona.phone = copiape.phone;
-        }
+        $scope.editarPersona = function (id) {    //CREO UNA INSTANCIA NUEVA Y COPIO LOS ATRIBUTOS EN EL OBJETO PERSONA DEL SCOPE
+            /*var copiape = angular.copy($scope.personas[id]);
+             $scope.persona.id = id;
+             $scope.persona.name = copiape.name;
+             $scope.persona.email = copiape.email;
+             $scope.persona.phone = copiape.phone;*/
+              peopleService.edit(id);
+        };
+
 
         $scope.cargarAgenda = function (){
-            peopleService.loadPeople().then(function(){
+            peopleService.loadPeople();
+            /*peopleService.loadPeople().then(function(){
                 $scope.personas = peopleService.getPeopleArray();
             },function(){
                 alert("No es posible cargar la agenda!");});
+        */
         };
 
         $scope.limpiarAgenda = function(){
             peopleService.cleanPeople();
-            $scope.personas = peopleService.getPeopleArray();
         };
     }]);
 
 //******************************* SERVICIO peopleService (ARRAY DE PERSONAS) **************************************************
 
-agenda.service('peopleService',['$firebase', function ($firebase){
+agenda.service('peopleService',['$firebase','$http', function ($firebase, $http){
 
     var ref = new Firebase("https://crud1.firebaseio.com/");
     // create an AngularFire reference to the data
@@ -86,32 +89,40 @@ agenda.service('peopleService',['$firebase', function ($firebase){
     };
 
     this.deletePeople = function(id){       //RECIBE  ID
-        peopleArray.splice(id, 1);
+        peopleArray.$remove(id);
     };
 
 
     this.getPeopleArray = function(){       //NO RECIBE PARAMETROS, DEVUELVE EL ARRAY CON PERSONAS
         /*var peopleArrayCopy = angular.copy(peopleArray); //COPIO EL ARRAY, PARA TENERLO ENCAPSULADO
         return peopleArrayCopy;*/
-        var promise = peopleArray;
-        console.log(promise);
-        return promise;
+        return peopleArray;
     };
 
+
     this.loadPeople = function(){       //NO RECIBE PARAMETROS, CARGO CONTACTOS DEL JSON "DATA"
-       /* var q = $q.defer();
         $http.get('scripts/data.json').success(function(data){
-            peopleArray = peopleArray.concat(data.data);
-            q.resolve(data);
-        }).error(function(data,status){
-            q.reject(data);
+            console.log(data.data);
+            var i;
+            for (i = 0; i < data.data.length; i++) {
+                console.log(data.data[i]);
+                peopleArray.$add(data.data[i]);}
+            //peopleArray.concat(data.data);
         });
-        return q.promise;*/
+
 
     };
 
     this.cleanPeople = function(){
-        peopleArray = [];
+        var i;
+
+        for (i = 0; i < peopleArray.length; i++) {
+            console.log(i);
+            peopleArray.$remove(i);}
+    };
+
+    this.edit = function(id){
+        console.log(peopleArray.$indexFor(id));
     };
 
 }]);
