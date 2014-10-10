@@ -78,7 +78,6 @@ agenda.service('peopleService',['$firebase','$http', function ($firebase, $http)
                 person.id = peopleArray.length;
                 console.log('guardati nuevo id: ' + person.id);
                 peopleArray.$add(person);
-
             }
         };
 

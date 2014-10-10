@@ -1,14 +1,17 @@
-
-<table class="table  table-bordered table-hover" style="background-color:#fffaf0" ng-show="personas.length >= 1" >
-    <button type="button" style="border-radius: 15px; margin: 10px" class="btn btn-success" ng-click="cargarAgenda()" >
-        <span class="glyphicon glyphicon-cloud-download"></span> CARGAR DESDE JSON </button>
-    <button type="button" style="border-radius: 15px; margin: 10px" class="btn btn btn-danger" ng-click="limpiarAgenda()">
-        <span class="glyphicon glyphicon-trash"></span> LIMPIAR AGENDA </button>
-
+<div class="botones">
     <h3><span ng-if="personas.length == 0">No hay contactos.</span></h3>
     <h3><span ng-if="personas.length == 1">Hay {{ personas.length }} contacto.</span></h3>
     <h3><span ng-if="personas.length > 1">Hay {{ personas.length }} contactos.</span></h3>
 
+    <button type="button" style="border-radius: 15px;" class="btn btn-success" ng-click="cargarAgenda()" >
+        <span class="glyphicon glyphicon-cloud-download"></span> Cargar Json </button>
+    <button type="button" style="border-radius: 15px;" class="btn btn btn-danger" ng-click="limpiarAgenda()">
+        <span class="glyphicon glyphicon-trash"></span> Limpiar </button>
+
+</div>
+
+
+<table class="table  table-bordered table-hover" style="background-color:#fffaf0" ng-show="personas.length >= 1" >
     <thead>
     <tr class="info">
         <!--<th>id</th>-->
